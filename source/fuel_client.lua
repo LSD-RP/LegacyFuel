@@ -71,10 +71,9 @@ CreateThread(function()
 		Wait(250)
 
 		local pumpObject, pumpDistance = FindNearestFuelPump()
-
+		currentCash = QBCore.Functions.GetPlayerData().money['cash']
 		if pumpDistance < 2.5 then
 			isNearPump = pumpObject
-			currentCash = QBCore.Functions.GetPlayerData().money['cash']
 		else
 			isNearPump = nil
 
@@ -133,7 +132,7 @@ end)
 AddEventHandler('fuel:refuelFromPump', function(pumpObject, ped, vehicle)
 	TaskTurnPedToFaceEntity(ped, vehicle, 1000)
 	Wait(1000)
-	SetCurrentPedWeapon(ped, -1569615261, true)
+	--SetCurrentPedWeapon(ped, -1569615261, true)
 	LoadAnimDict("timetable@gardener@filling_can")
 	TaskPlayAnim(ped, "timetable@gardener@filling_can", "gar_ig_5_filling_can", 2.0, 8.0, -1, 50, 0, false, false, false)
 
@@ -192,13 +191,13 @@ CreateThread(function()
 
 						if GetSelectedPedWeapon(ped) == 883325847 then
 							stringCoords = vehicleCoords
-
 							if GetAmmoInPedWeapon(ped, 883325847) < 100 then
+								
 								canFuel = false
 							end
 						end
 
-						if GetVehicleFuelLevel(vehicle) < 95 and canFuel then
+						if GetVehicleFuelLevel(vehicle) < 95 and canFuel and GetAmmoInPedWeapon(ped, 883325847) > 100 then
 							if currentCash > 0 then
 								DrawText3Ds(stringCoords.x, stringCoords.y, stringCoords.z + 1.2, Config.Strings.EToRefuel)
 
